@@ -1,5 +1,9 @@
-## As of 29/04/2024
-I need to add user credentials to register and login, as a .JSON
+## As of 23/05/2024
+I have created user credential system with .JSON file. It also works
+
+If username already exists, prints out that it already exists <br>
+If username or password is incorrect, prints out that it is incorrect <br>
+if username and password is correct, prints out that it is correct and logged in <br>
 
 ![Login](https://github.com/LeakyEarth2000/VVT-Project-Manager/assets/117555864/be0b4979-a5e6-443e-a0fe-87bfea7f93a6)
 When you click the register button:
