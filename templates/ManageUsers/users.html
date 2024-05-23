@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='ManageUsers/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <div class="wrapper">
-        <img src="/Index/vvtEng.png" alt="VVT Engineering Logo" width="124" height="121">
+        <img src="/static/Index/vvtEng.png" alt="VVT Engineering Logo" width="124" height="121">
         <form action="/manageusers" method="post">
             <h1>Register</h1>
         
