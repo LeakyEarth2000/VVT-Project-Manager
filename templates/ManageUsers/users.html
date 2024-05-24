@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='ManageUsers/style.css') }}">
+    <link rel="stylesheet" href="/static/ManageUsers/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -23,8 +23,17 @@
                 <i class='bx bxs-lock-alt'></i>
             </div>
         
+            <div class="drop-down">
+                <select name="user-type" required>
+                    <option value="">Select user type</option>
+                    <option value="standard">Standard</option>
+                    <option value="administrator">Administrator</option>
+                </select>
+            </div>
+        
             <button type="submit" class="btn">Register</button>
         </form>
+        
     </div>
 </body>
 </html>

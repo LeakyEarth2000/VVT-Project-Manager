@@ -25,8 +25,9 @@ def load_tasks():
 
 def save_tasks(tasks):
   """Saves tasks data to CSV file"""
-  with open(tasks_data_file, 'w') as f:
-    csv.writer(f).writerows(tasks)
+  with open(tasks_data_file, 'w', newline='') as f:  # add newline='' to open function
+    writer = csv.writer(f)
+    writer.writerows(tasks)
 
 tasks = load_tasks()  # Load existing tasks on startup
 
@@ -41,7 +42,8 @@ def add_task():
 @app.route('/delete-task', methods=['POST'])
 def delete_task():
   task_name = request.form['task-name']
-  tasks = [task for task in tasks if task[0] != task_name]
+  new_tasks = [task for task in tasks if task[0] != task_name]
+  tasks[:] = new_tasks  # Update the original list with the new list
   save_tasks(tasks)
   flash(f'Task {task_name} deleted')  # flash success message
   return redirect(url_for('project_manager'))
@@ -68,20 +70,25 @@ users = load_users()  # Load existing users on startup
 def hello_world():
   return render_template('Index/index.html')
 
+# REGISTERING USER + ACCOUNT TYPE
 @app.route('/register', methods=['GET', 'POST'])
 def register():
   if request.method == 'POST':
     username = request.form['username']
     password = request.form['password']
+    user_type = request.form['user-type']
     if username in users:
       print("Existing username has already been created!")
       return render_template('ManageUsers/users.html')
-    users[username] = password
+    users[username] = {'password': password, 'type': user_type}
     save_users(users)
     return render_template('Index/index.html')
   else:
     return render_template('Register/registerAuthorise.html')
 
+
+
+# AUTHORISATION
 @app.route('/manageusers', methods=['GET', 'POST'])
 def manageusers():
   if request.method == 'POST':
@@ -95,6 +102,8 @@ def manageusers():
         return '<h1>Incorrect!</h1>'
   return render_template('Register/registerAuthorise.html')
 
+
+# LOGIN (INDEX.HTML)
 @app.route('/login', methods=['POST'])
 def login():
   username = request.form['username']
