@@ -12,6 +12,9 @@
         <img src="{{ url_for('static', filename='Index/vvtEng.png') }}" alt="VVT Engineering Logo" width="124" height="121">
         <form action="/login" method="post">
             <h1>Login</h1>
+  
+            <p style="color: red;">{{ error }}</p>   
+            <p style="color: green;">{{ success }}</p>
 
             <div class="input-box">
                 <input type="text" name="username" placeholder="Username" required>

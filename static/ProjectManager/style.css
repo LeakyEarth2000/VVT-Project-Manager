@@ -1,0 +1,24 @@
+.project-manager {
+    width: 80%;
+    margin: 0 auto;
+    font-family: "Poppins", sans-serif;
+}
+
+.task-list {
+    margin-bottom: 20px;
+}
+
+.add-task-form input[type="text"] {
+    width: 70%;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.add-task-form input[type="date"] {
+    padding: 10px;
+    margin-right: 10px;
+}
+
+.add-task-form button {
+    padding: 10px 20px;
+}

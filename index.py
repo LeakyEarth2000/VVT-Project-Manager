@@ -1,5 +1,6 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, flash, request, render_template, redirect, url_for
 import json
+import csv
 
 app = Flask(__name__)
 
@@ -8,6 +9,43 @@ correctPassword = "maths>english"
 
 # Configure path to user data file
 user_data_file = 'users.json'
+
+# Configure path to tasks data file
+tasks_data_file = 'tasks.csv'
+
+def load_tasks():
+  """Loads tasks data from CSV file (creates file if it doesn't exist)"""
+  try:
+    with open(tasks_data_file, 'r') as f:
+      return list(csv.reader(f))
+  except FileNotFoundError:
+    with open(tasks_data_file, 'w') as f:
+      csv.writer(f).writerow(['Task Name', 'Due Date'])  # Write header row
+    return []
+
+def save_tasks(tasks):
+  """Saves tasks data to CSV file"""
+  with open(tasks_data_file, 'w') as f:
+    csv.writer(f).writerows(tasks)
+
+tasks = load_tasks()  # Load existing tasks on startup
+
+@app.route('/add-task', methods=['POST'])
+def add_task():
+  task_name = request.form['task-name']
+  due_date = request.form['due-date']
+  tasks.append([task_name, due_date])
+  save_tasks(tasks)
+  return redirect(url_for('project_manager'))
+
+@app.route('/delete-task', methods=['POST'])
+def delete_task():
+  task_name = request.form['task-name']
+  tasks = [task for task in tasks if task[0] != task_name]
+  save_tasks(tasks)
+  flash(f'Task {task_name} deleted')  # flash success message
+  return redirect(url_for('project_manager'))
+
 
 def load_users():
   """Loads user data from JSON file (creates file if it doesn't exist)"""
@@ -63,10 +101,10 @@ def login():
   password = request.form['password']
   if username not in users or users[username] != password:
     print("Invalid username or password")
-    return render_template('Index/index.html') # maybe a pop up error, or a modified version of index.html that will say an error? i think its easier to modify the website so that it will show an error instead of a pop up??
+    return render_template('Index/index.html', error="Invalid username or password") # pass error message to template
   else:
     print("Logged in")
-    return render_template('Index/index.html') # must change to a different website
+    return render_template('ProjectManager/projectmanager.html', tasks=tasks) # redirect to project manager page
     
 
 if __name__ == '__main__':
