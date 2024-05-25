@@ -68,6 +68,6 @@ def register():
             db.session.commit()
             # login_user(user, remember=True)
             flash('Account created! Please login', category='success')
-            return redirect(url_for('views.home'))
+            return redirect(url_for('auth.login'))
     return render_template('register.html')
 
