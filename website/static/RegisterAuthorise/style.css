@@ -7,6 +7,15 @@
     font-family: "Poppins", sans-serif;
 }
 
+.flash-message.error {
+    color: #ff0033;
+}
+
+.flash-message.success {
+    color: #097969;
+}
+
+
 body {
     display: flex;
     justify-content: center;

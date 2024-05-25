@@ -4,27 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
-    <link rel="stylesheet" href="/static/ManageUsers/style.css">
+    <link rel="stylesheet" href="/static/Register/style.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <div class="wrapper">
         <img src="/static/assets/vvtEng.png" alt="VVT Engineering Logo" width="124" height="121">
-        <form action="/register" method="post">
+        <form action="{{ url_for('auth.register') }}"method="post">
             <h1>Register</h1>
-        
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+            
             <div class="input-box">
-                <input type="text" name="username" placeholder="Username" required>
+                <input type="text" id="username" name="username" placeholder="Username" required>
                 <i class='bx bxs-user'></i>
             </div>
         
             <div class="input-box">
-                <input type="password" name="password" placeholder="Password" required>
+                <input type="password" id="password" name="password" placeholder="Password" required>
                 <i class='bx bxs-lock-alt'></i>
             </div>
         
             <div class="drop-down">
-                <select name="user-type" required>
+                <select id = "usertype" name="usertype" required>
                     <option value="">Select user type</option>
                     <option value="standard">Standard</option>
                     <option value="administrator">Administrator</option>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='Index/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='Login/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
@@ -13,8 +13,15 @@
         <form action="/login" method="post">
             <h1>Login</h1>
   
-            <p style="color: red;">{{ error }}</p>   
-            <p style="color: green;">{{ success }}</p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
 
             <div class="input-box">
                 <input type="text" name="username" placeholder="Username" required>
@@ -30,7 +37,7 @@
 
             
             <div class="register-link">
-                <p>Admin only: <a href="{{ url_for('register') }}">Register</a> </p>
+                <p>Admin only: <a href="{{ url_for('auth.registerAuth') }}">Register</a> </p>
             </div>            
             
         </form>
