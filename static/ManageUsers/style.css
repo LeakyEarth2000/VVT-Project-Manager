@@ -40,30 +40,51 @@ h1 {
     vertical-align: middle;
 }
 
-.input-box {
+
+.drop-down select {
+    -webkit-appearance: none;  /* Remove default styles in Chrome, Safari */
+    -moz-appearance: none;  /* Remove default styles in Firefox */
+    appearance: none;
+    width: 100%;
+    background: transparent;
+    border: 2px solid rgba(225, 225, 225, 0.2);
+    border-radius: 40px;
+    font-size: 16px;
+    color: #fff;
+    padding: 10px 20px;
+    outline: none;
+    
+}
+
+.drop-down option {
+    color: #000
+}
+
+.drop-down {
     position: relative;
     width: 100%;
     height: 50px;
     margin: 30px 0;
 }
 
-.drop-down select {
-    width: 80%;
-    height: 50%;
-    background: transparent;
-    border: 2px solid rgba(225, 225, 225, 0.2);
-    border-radius: 40px;
-    outline: none;
+.drop-down i { /* Icon */
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    pointer-events: none;
     color: #fff;
-    padding: 0 20px;
-    appearance: none;  /* Remove default appearance */
-    -webkit-appearance: none;  /* Remove default appearance for Chrome */
-    -moz-appearance: none;  /* Remove default appearance for Firefox */
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"><path d="M5 8l5 5 5-5H5z"/></svg>');  /* Add custom dropdown arrow */
-    background-repeat: no-repeat;
-    background-position: right 20px center;
 }
 
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+    
+}
 
 .input-box input { 
     width: 100%;
@@ -89,6 +110,8 @@ h1 {
     font-size: 20px;
 }
 
+
+/* Register button */
 .btn {
     width: 100%;
     height: 45px;
