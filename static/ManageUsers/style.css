@@ -12,7 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: url('/static/Index/rbackground.jpg') no-repeat center/cover;
+    background: url('/static/assets/rbackground.jpg') no-repeat center/cover;
 }
 
 .wrapper {
