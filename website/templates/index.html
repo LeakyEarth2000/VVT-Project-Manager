@@ -36,15 +36,11 @@
         <div class="content">
             <span class="blur"></span>
             <span class="blur"></span>
-            <h4>VVT Engineering</h4>
             <H1>This is <span><br>VVT Project Manager</span></H1>
             <p>
                 Welcome to VVT Project Manager, the ultimate destination for efficient and reliable project management solutions
             </p>
-            <button class="btn">
-                <a href="http://127.0.0.1:6969/login">Get Started
-                </a>
-            </button>
+            <a href="{{ url_for('auth.login') }}" class="btn" role="button" style="display: inline-block; text-align: center; ">Get Started</a>
         </div>
         <div class="image">
             <img src="{{ url_for('static', filename='assets/header.png') }}">
