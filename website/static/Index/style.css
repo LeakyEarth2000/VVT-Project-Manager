@@ -29,11 +29,27 @@ nav{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 2rem;
 }
 
 .nav-logo{
-    max-width: 100px;
+    display: flex;
+    align-items: center;
+}
+
+.nav-logo img {
+    width: 100px;
+}
+
+.nav-tagline {
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+
+.logo-tagline {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 .nav-links{

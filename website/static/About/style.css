@@ -32,6 +32,13 @@ nav{
     gap: 2rem;
 }
 
+.nav-tagline h4{
+    color: #fff;
+    margin-bottom: 2rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
 .nav-logo{
     max-width: 100px;
 }
@@ -93,7 +100,6 @@ nav{
 header{
     position: relative;
     padding-top: 2rem;
-    display: grid;
     grid-template-columns: repeat(2, 1fr);
     align-items: center;
     gap: 2rem;
@@ -102,7 +108,7 @@ header{
 header .content h4{
     margin-bottom: 1rem;
     color: #ccc;
-    font-size: 1rem;
+    font-size: 2rem;
     font-weight: 600;
 }
 
