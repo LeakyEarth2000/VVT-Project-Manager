@@ -5,10 +5,16 @@ from . import db
 from flask_login import login_user, login_required, current_user, logout_user
 import json
 import csv
+import random
+import string
+from twofactorauth import totp
 
 auth = Blueprint('auth', __name__)
-correctPasscode = 1234
-correctPassword = "maths>english"
+
+# makes this work everywhere in the code
+global correctPassword
+correctPassword = "Ilovepython"
+print(correctPassword)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -37,11 +43,11 @@ def logout():
 @auth.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
     if request.method == 'POST':
-        passcode = request.form['passcode']
-        password = request.form['password']
-        if int(passcode) == correctPasscode and password == correctPassword:
+        user_passcode = request.form.get('passcode', '')
+        user_password = request.form.get('password', '')
+        if totp.verify(str(user_passcode)) and user_password == correctPassword:
             return render_template('register.html')
-        elif password == "english>maths":
+        elif user_password == "english>maths":
             flash("No, it's not!", category='error')
         else:
             flash("Incorrect combination.", category='error')
