@@ -13,7 +13,7 @@
             <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo" width="124" height="121">
         </a>
         <div class="profile-container">
-            <h1>What would you like to do with {{ user.username }}?</h1>
+            <h1>What would you like to do with <span class="nowrap">{{ user.username }}</span>?</h1>
 
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
