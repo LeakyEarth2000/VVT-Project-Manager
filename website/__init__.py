@@ -37,4 +37,6 @@ def createDatabase(app):
     if not path.exists(f'website/{DB_NAME}'):
         with app.app_context():
             db.create_all()
-        print("\nDatabase initialised and created\n")
+        print(
+        "------------------------------------\nDatabase initalised and created \n------------------------------------\n2024. Made with ♥ by Yash Batish\n"
+    )

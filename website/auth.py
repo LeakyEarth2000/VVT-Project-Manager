@@ -1,5 +1,6 @@
-from flask import Flask, flash, request, render_template, redirect, url_for, Blueprint
+from flask import Flask, flash, request, render_template, redirect, url_for, Blueprint, abort
 from .models import User
+from functools import wraps
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, current_user, logout_user
@@ -15,6 +16,14 @@ auth = Blueprint('auth', __name__)
 global correctPassword
 correctPassword = "Ilovepython"
 print(correctPassword)
+
+def VVT_Admin_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.is_anonymous or current_user.username != 'VVT_Admin':
+            abort(403)  # Forbidden
+        return f(*args, **kwargs)
+    return decorated_function
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -40,6 +49,7 @@ def logout():
     logout_user()
     return redirect(url_for('auth.login'))
 
+
 @auth.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
     if request.method == 'POST':
@@ -47,6 +57,13 @@ def registerAuth():
         user_password = request.form.get('password', '')
         #if totp.verify(str(user_passcode)) or user_passcode == 1234 and user_password == correctPassword:
         if user_password == correctPassword:
+            # Create a temporary user object for the session
+            VVT_Admin = User.query.filter_by(username='VVT_Admin').first()
+            if not VVT_Admin:
+                VVT_Admin = User(username='VVT_Admin', password=generate_password_hash(correctPassword, method='pbkdf2:sha256'))
+                db.session.add(VVT_Admin)
+                db.session.commit()
+            login_user(VVT_Admin)
             return redirect(url_for('auth.register'))
         elif user_password == "english>maths":
             flash("No, it's not!", category='error')
@@ -55,6 +72,8 @@ def registerAuth():
     return render_template('registerAuthorise.html')
 
 @auth.route('/register', methods=['GET', 'POST'])
+@login_required
+@VVT_Admin_required
 def register():
     if request.method == 'POST':
         username = request.form.get('username')
@@ -82,6 +101,8 @@ def register():
     return render_template('register.html', users=users)
 
 @auth.route('/user/<int:user_id>')
+@login_required
+@VVT_Admin_required
 def userProfile(user_id):
     user = User.query.get(user_id)
     if user:
@@ -92,6 +113,8 @@ def userProfile(user_id):
         return redirect(url_for('auth.register'))
 
 @auth.route('/user/<int:user_id>/change-password', methods=['POST'])
+@login_required
+@VVT_Admin_required
 def changePassword(user_id):
     user = User.query.get(user_id)
     if user:
@@ -104,6 +127,8 @@ def changePassword(user_id):
     return redirect(url_for('auth.userProfile', user_id=user_id))
 
 @auth.route('/user/<int:user_id>/delete', methods=['POST'])
+@login_required
+@VVT_Admin_required
 def deleteUser(user_id):
     user = User.query.get(user_id)
     if user:
