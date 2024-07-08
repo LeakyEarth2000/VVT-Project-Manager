@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="/static/UserProfile/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='UserProfile/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <div class="user-profile-wrapper">
-        <header>
-            <a href="{{ url_for('views.home') }}">
-                <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo" class="logo">
-            </a>
-            <h1>User Profile</h1>
+    <div class="wrapper">
+        <a href="{{ url_for('views.home') }}">
+            <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo" width="124" height="121">
+        </a>
+        <div class="profile-container">
+            <h1>What would you like to do with {{ user.username }}?</h1>
+
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for category, message in messages %}
@@ -23,23 +24,19 @@
             {% endfor %}
             {% endif %}
             {% endwith %}
-        </header>
-        <div class="user-details">
-            <h2>Manage Users</h2>
-            <div class="user-info">
-                {% if user %}
-                    <p>Username: {{ user.username }}</p>
-                    <p>User Type: {{ user.usertype if user.usertype else 'None' }}</p>
-                    <form action="{{ url_for('auth.changePassword', user_id=user.id) }}" method="post">
-                        <button type="submit" class="btn1">Change Password</button>
-                    </form>
-                    <form action="{{ url_for('auth.deleteUser', user_id=user.id) }}" method="post">
-                        <button type="submit" class="btn2">Delete User</button>
-                    </form>
-                {% else %}
-                    <p>No user found.</p>
-                {% endif %}
+
+            <div class="user-details">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>User Type:</strong> {{ user.usertype }}</p>
             </div>
+
+            <form action="{{ url_for('auth.changePassword', user_id=user.id) }}" method="post">
+                <button type="submit" class="btn1">Change Password</button>
+            </form>
+
+            <form action="{{ url_for('auth.deleteUser', user_id=user.id) }}" method="post">
+                <button type="submit" class="btn2">Delete User</button>
+            </form>
         </div>
     </div>
 </body>

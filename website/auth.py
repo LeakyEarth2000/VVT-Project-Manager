@@ -78,7 +78,7 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        usertype = request.form.get('user-type')
+        usertype = request.form.get('usertype')
 
         user = User.query.filter_by(username=username).first()
         if user:
