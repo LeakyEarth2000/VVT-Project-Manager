@@ -32,13 +32,6 @@ nav{
     gap: 2rem;
 }
 
-.nav-tagline h4{
-    color: #fff;
-    margin-bottom: 2rem;
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-
 .nav-logo{
     max-width: 100px;
 }

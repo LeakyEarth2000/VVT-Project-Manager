@@ -8,44 +8,59 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
-    <div class="wrapper">
-        <a href="{{ url_for('views.home') }}">
-            <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo" width="124" height="121">
-        </a>
-        <form action="{{ url_for('auth.register') }}"method="post">
-            <h1>Register</h1>
+    <div class="main-container">
+        <div class="wrapper">
+            <a href="{{ url_for('views.home') }}">
+                <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo" width="124" height="121">
+            </a>
+            <form action="{{ url_for('auth.register') }}" method="post">
+                <h1>Register</h1>
 
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for category, message in messages %}
-            <div class="flash-message {{ category }}">
-                {{ message }}
-            </div>
-            {% endfor %}
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="flash-message {{ category }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+
+                <div class="input-box">
+                    <input type="text" id="username" name="username" placeholder="Username" required>
+                    <i class='bx bxs-user'></i>
+                </div>
+
+                <div class="input-box">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                    <i class='bx bxs-lock-alt'></i>
+                </div>
+
+                <div class="drop-down">
+                    <select id="usertype" name="usertype" required>
+                        <option value="">Select user type</option>
+                        <option value="standard">Standard</option>
+                        <option value="administrator">Administrator</option>
+                    </select>
+                    <i class='bx bx-chevron-down'></i>
+                </div>
+
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+
+        <div class="user-wrapper">
+            <h2>Manage Users</h2>
+            {% if users|length == 0 %}
+                <p>No users found.</p>
+            {% else %}
+                <ul>
+                {% for user in users %}
+                    <li><a href="{{ url_for('auth.user_profile', user_id=user.id) }}">{{ user.username }}</a></li>
+                {% endfor %}
+                </ul>
             {% endif %}
-            {% endwith %}
-            
-            <div class="input-box">
-                <input type="text" id="username" name="username" placeholder="Username" required>
-                <i class='bx bxs-user'></i>
-            </div>
-        
-            <div class="input-box">
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <i class='bx bxs-lock-alt'></i>
-            </div>
-        
-            <div class="drop-down">
-                <select id = "usertype" name="usertype" required>
-                    <option value="">Select user type</option>
-                    <option value="standard">Standard</option>
-                    <option value="administrator">Administrator</option>
-                </select>
-                <i class='bx bx-chevron-down'></i>
-            </div>            
-        
-            <button type="submit" class="btn">Register</button>
-        </form>
+        </div>
         
     </div>
 </body>

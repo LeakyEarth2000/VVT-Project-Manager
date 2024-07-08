@@ -45,7 +45,8 @@ def registerAuth():
     if request.method == 'POST':
         user_passcode = request.form.get('passcode', '')
         user_password = request.form.get('password', '')
-        if totp.verify(str(user_passcode)) and user_password == correctPassword:
+        #if totp.verify(str(user_passcode)) or user_passcode == 1234 and user_password == correctPassword:
+        if user_password == correctPassword:
             return render_template('register.html')
         elif user_password == "english>maths":
             flash("No, it's not!", category='error')
@@ -72,8 +73,20 @@ def register():
                 password, method='pbkdf2:sha256'), usertype=usertype)
             db.session.add(new_user)
             db.session.commit()
-            # login_user(user, remember=True)
             flash('Account created! Please login', category='success')
             return redirect(url_for('auth.login'))
-    return render_template('register.html')
+
+    users = User.query.all()
+    print(users)
+    return render_template('register.html', users=users)
+
+@auth.route('/user/<int:user_id>')
+def user_profile(user_id):
+    user = User.query.get(user_id)
+    if user:
+        # Render user profile template or return user details
+        return render_template('user_profile.html', user=user)
+    else:
+        flash('User not found', category='error')
+        return redirect(url_for('auth.register'))
 

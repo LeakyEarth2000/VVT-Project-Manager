@@ -1,0 +1,83 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Background */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('/static/assets/rbackground.jpg') no-repeat center/cover;
+}
+
+/* User profile wrapper */
+.user-profile-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(225, 225, 225, 0.2);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+    padding: 30px 40px;
+    text-align: center;
+    width: 80%;
+    max-width: 800px;
+    margin: 20px;
+}
+
+/* Header styles */
+header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 80px;
+    height: auto;
+    margin-right: 20px;
+}
+
+header h1 {
+    font-size: 36px;
+}
+
+/* User details */
+.user-details {
+    width: 100%;
+}
+
+.user-details h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.users-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-item {
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: 2px solid rgba(225, 225, 225, 0.2);
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 10px 0;
+    text-decoration: none;
+    font-size: 18px;
+    width: 100%;
+    max-width: 600px;
+    text-align: left;
+}
+
+.user-item:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
