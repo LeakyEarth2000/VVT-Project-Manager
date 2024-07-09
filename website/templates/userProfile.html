@@ -96,17 +96,38 @@
             </form>
 
             <button id="change-password-btn" class="btn1">Change Password</button>
+            <button id="delete-user-btn" class="btn2" onclick="showConfirmationButtons()">Delete User</button>
 
-            <form action="{{ url_for('auth.deleteUser', user_id=user.id) }}" method="post">
-                <button type="submit" class="btn2">Delete User</button>
+            <form id="delete-user-form" action="{{ url_for('auth.deleteUser', user_id=user.id) }}" method="post">
+                <button type="submit" class="confirm-delete" style="display: none;">Delete</button>
+                <button type="button" class="cancel-delete" style="display: none;">Actually, take me back</button>
             </form>
         </div>
     </div>
 
     <script>
+        function showConfirmationButtons() {
+        var confirmBtn = document.querySelector('.confirm-delete');
+        var cancelBtn = document.querySelector('.cancel-delete');
+        confirmBtn.style.display = 'block';
+        cancelBtn.style.display = 'block';
+        }
+
         document.getElementById('change-password-btn').addEventListener('click', function() {
             var inputBoxes = document.querySelectorAll('.input-box');
             var submitBtn = document.querySelector('.submit-btn');
+            inputBoxes.forEach(function(box) {
+                box.style.display = 'block';
+                box.classList.add('fade-in');
+            });
+            submitBtn.style.display = 'block';
+            submitBtn.classList.add('fade-in');
+            this.style.display = 'none';
+        });
+
+        document.getElementById('delete-user-btn').addEventListener('click', function() {
+            var tmbBtn = document.querySelectorAll('.cancel-delete');
+            var confirmBtn = document.querySelector('.confirm-delete');
             inputBoxes.forEach(function(box) {
                 box.style.display = 'block';
                 box.classList.add('fade-in');
