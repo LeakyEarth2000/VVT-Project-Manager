@@ -19,7 +19,7 @@
             margin: 5px 0;
             box-sizing: border-box;
             border: 2px solid #ccc;
-            border-radius: 40px; /* Updated to match userProfile.html */
+            border-radius: 40px;
         }
 
         .fade-in {
@@ -42,11 +42,15 @@
             background-color: red;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 40px;
             padding: 5px 10px;
             cursor: pointer;
         }
 
+        .wrapper {
+            margin-top: -175px;
+        }
+        
     </style>
 </head>
 
@@ -85,16 +89,17 @@
         <div class="image">
             <img src="{{ url_for('static', filename='assets/header.png') }}">
         </div>
-        
-    <form id="add-note-form" action="{{ url_for('views.addNote') }}" method="post">
-        <div class="input-box">
-            <input type="text" name="note_data" placeholder="Enter your note" required>
-        </div>
-        <div class="input-box">
-            <input type="date" name="note_date" required>
-        </div>
-        <button type="submit" class="submit-btn">Submit</button>
-    </form>
+    <div class="wrapper">
+        <form id="add-note-form" action="{{ url_for('views.addNote') }}" method="post">
+            <div class="input-box">
+                <input type="text" name="note_data" placeholder="Enter your note" required>
+            </div>
+            <div class="input-box">
+                <input type="date" name="note_date" required>
+            </div>
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
 
     </header>
 
