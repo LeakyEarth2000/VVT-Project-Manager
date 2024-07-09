@@ -21,38 +21,8 @@
             border-radius: 4px;
         }
 
-        .btn1, .input-box input {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .submit-btn {
-            display: none;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn1:hover, .input-box input:hover, .submit-btn:hover {
-            background-color: #45a049;
-        }
-
         .fade-in {
-            animation: fadeIn 1s;
+            animation: fadeIn 2s;
         }
 
         @keyframes fadeIn {
@@ -96,12 +66,8 @@
             </form>
 
             <button id="change-password-btn" class="btn1">Change Password</button>
-            <button id="delete-user-btn" class="btn2" onclick="showConfirmationButtons()">Delete User</button>
-
-            <form id="delete-user-form" action="{{ url_for('auth.deleteUser', user_id=user.id) }}" method="post">
-                <button type="submit" class="confirm-delete" style="display: none;">Delete</button>
-                <button type="button" class="cancel-delete" style="display: none;">Actually, take me back</button>
-            </form>
+            <a href="{{ url_for('auth.confirmDelete') }}"><button id="delete-user-btn" class="btn2">Delete User</button></a>
+            
         </div>
     </div>
 
@@ -125,17 +91,6 @@
             this.style.display = 'none';
         });
 
-        document.getElementById('delete-user-btn').addEventListener('click', function() {
-            var tmbBtn = document.querySelectorAll('.cancel-delete');
-            var confirmBtn = document.querySelector('.confirm-delete');
-            inputBoxes.forEach(function(box) {
-                box.style.display = 'block';
-                box.classList.add('fade-in');
-            });
-            submitBtn.style.display = 'block';
-            submitBtn.classList.add('fade-in');
-            this.style.display = 'none';
-        });
     </script>
 </body>
 </html>
