@@ -6,6 +6,61 @@
     <title>User Profile</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='UserProfile/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        .input-box, .submit-btn {
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn1, .input-box input {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .submit-btn {
+            display: none;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn1:hover, .input-box input:hover, .submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .fade-in {
+            animation: fadeIn 1s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+    
 </head>
 <body>
     <div class="wrapper">
@@ -30,14 +85,36 @@
                 <p><strong>User Type:</strong> {{ user.usertype }}</p>
             </div>
 
-            <form action="{{ url_for('auth.changePassword', user_id=user.id) }}" method="post">
-                <button type="submit" class="btn1">Change Password</button>
+            <form id="change-password-form" action="{{ url_for('auth.changePassword', user_id=user.id) }}" method="post">
+                <div class="input-box">
+                    <input type="password" name="new_password" placeholder="New Password" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit" class="submit-btn">Submit</button>
             </form>
+
+            <button id="change-password-btn" class="btn1">Change Password</button>
 
             <form action="{{ url_for('auth.deleteUser', user_id=user.id) }}" method="post">
                 <button type="submit" class="btn2">Delete User</button>
             </form>
         </div>
     </div>
+
+    <script>
+        document.getElementById('change-password-btn').addEventListener('click', function() {
+            var inputBoxes = document.querySelectorAll('.input-box');
+            var submitBtn = document.querySelector('.submit-btn');
+            inputBoxes.forEach(function(box) {
+                box.style.display = 'block';
+                box.classList.add('fade-in');
+            });
+            submitBtn.style.display = 'block';
+            submitBtn.classList.add('fade-in');
+            this.style.display = 'none';
+        });
+    </script>
 </body>
 </html>

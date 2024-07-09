@@ -93,7 +93,7 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             flash('Account created! Please login', category='success')
-            return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.register'))
 
     # Fetch all users from the database
     users = User.query.all()
@@ -118,12 +118,20 @@ def userProfile(user_id):
 def changePassword(user_id):
     user = User.query.get(user_id)
     if user:
-        newPassword = ''.join(random.choices(string.ascii_letters + string.digits, k=8))
-        user.password = generate_password_hash(newPassword, method='pbkdf2:sha256')
-        db.session.commit()
-        flash(f'Password changed to: {newPassword}', category='success')
+        new_password = request.form.get('new_password')
+        confirm_password = request.form.get('confirm_password')
+
+        if new_password != confirm_password:
+            flash('Passwords do not match.', category='error')
+        elif len(new_password) < 7:
+            flash('Password must be at least 7 characters.', category='error')
+        else:
+            user.password = generate_password_hash(new_password, method='pbkdf2:sha256')
+            db.session.commit()
+            flash('Password changed successfully.', category='success')
     else:
         flash('User not found', category='error')
+    
     return redirect(url_for('auth.userProfile', user_id=user_id))
 
 @auth.route('/user/<int:user_id>/delete', methods=['POST'])
