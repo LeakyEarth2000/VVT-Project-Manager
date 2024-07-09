@@ -19,11 +19,7 @@
             margin: 5px 0;
             box-sizing: border-box;
             border: 2px solid #ccc;
-            border-radius: 10px;
-        }
-
-        .submit-btn {
-            margin-top: 20px;
+            border-radius: 40px; /* Updated to match userProfile.html */
         }
 
         .fade-in {
@@ -50,6 +46,7 @@
             padding: 5px 10px;
             cursor: pointer;
         }
+
     </style>
 </head>
 
@@ -58,7 +55,7 @@
     <nav>
         <div class="logo-tagline">
             <div class="nav-logo">
-                <a href="https://vvteng.com.au/">
+                <a href="{{ url_for('views.home') }}">
                     <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo">
                 </a>
             </div>
@@ -83,10 +80,22 @@
             <p>
                 Here are your personal notes.
             </p>
+            <button id="add-note-btn" class="btn">Add Note</button> 
         </div>
         <div class="image">
             <img src="{{ url_for('static', filename='assets/header.png') }}">
         </div>
+        
+    <form id="add-note-form" action="{{ url_for('views.addNote') }}" method="post">
+        <div class="input-box">
+            <input type="text" name="note_data" placeholder="Enter your note" required>
+        </div>
+        <div class="input-box">
+            <input type="date" name="note_date" required>
+        </div>
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+
     </header>
 
     <section class="notes-content">
@@ -101,17 +110,6 @@
         {% endfor %}
     </section>
 
-    <button id="add-note-btn" class="btn">Add Note</button>
-
-    <form id="add-note-form" action="{{ url_for('views.addNote') }}" method="post">
-        <div class="input-box">
-            <input type="text" name="note_data" placeholder="Enter your note" required>
-        </div>
-        <div class="input-box">
-            <input type="date" name="note_date" required>
-        </div>
-        <button type="submit" class="submit-btn">Submit</button>
-    </form>
 
     <div class="user-icon">
         <a href="{{ url_for('auth.logout') }}">
