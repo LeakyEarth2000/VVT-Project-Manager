@@ -50,6 +50,10 @@
         .wrapper {
             margin-top: -175px;
         }
+
+        .wrapper1 {
+            margin-top: -150px;
+        }
         
     </style>
 </head>
@@ -103,18 +107,19 @@
 
     </header>
 
-    <section class="notes-content">
-        {% for note in notes %}
-        <div class="note-card">
-            <p>{{ note.data }}</p>
-            <small>{{ note.date.strftime('%Y-%m-%d') }}</small>
-            <form action="{{ url_for('views.deleteNote', note_id=note.id) }}" method="post">
-                <button type="submit" class="delete-btn">Delete</button>
-            </form>
-        </div>
-        {% endfor %}
-    </section>
-
+    <div class="wrapper1">
+        <section class="notes-content">
+            {% for note in notes %}
+            <div class="note-card">
+                <p>{{ note.data }}</p>
+                <small>{{ note.date.strftime('%Y-%m-%d') }}</small>
+                <form action="{{ url_for('views.deleteNote', note_id=note.id) }}" method="post">
+                    <button type="submit" class="delete-btn">Delete</button>
+                </form>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
 
     <div class="user-icon">
         <a href="{{ url_for('auth.logout') }}">
