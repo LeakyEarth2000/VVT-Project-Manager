@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='UserDashboard/style.css') }}">
+    <title>User Dashboard - VVT Engineering</title>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo-tagline">
+            <div class="nav-logo">
+                <a href="https://vvteng.com.au/">
+                    <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo">
+                </a>
+            </div>
+    
+            <div class="nav-tagline">
+                <h4>VVT Engineering</h4>
+            </div>
+        </div>
+    
+        <ul class="nav-links">
+            <li class="link"><a href="https://vvteng.com.au/">Home</a></li>
+            <li class="link"><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            <li class="link"><a href="{{ url_for('views.about') }}">About</a></li>
+        </ul>
+    </nav>
+    
+    <header class="container">
+        <div class="content">
+            <span class="blur"></span>
+            <span class="blur"></span>
+            <h1>Welcome, {{ current_user.username }}</h1>
+            <p>
+                This is your dashboard. Manage your projects and account settings here.
+            </p>
+            <a href="#" class="btn" role="button" style="display: inline-block; text-align: center;">View Projects</a>
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='assets/header.png') }}">
+        </div>
+    </header>
+
+
+    <div class="user-icon">
+        <a href="{{ url_for('auth.logout') }}">
+            <i class="ri-user-line"></i> {{ current_user.username }}
+        </a>
+    </div>
+
+    <div class="copyright">
+        2024. Made with ♥ by Yash Batish
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

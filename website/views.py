@@ -14,3 +14,7 @@ def home():
 @views.route('/about')
 def about():
     return render_template('about.html')
+@views.route('/dashboard')
+@login_required
+def dashboard():
+    return render_template('userDashboard.html')
