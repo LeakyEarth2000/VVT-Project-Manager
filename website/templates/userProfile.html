@@ -30,7 +30,6 @@
             to { opacity: 1; }
         }
     </style>
-    
 </head>
 <body>
     <div class="wrapper">
@@ -59,26 +58,20 @@
                 <div class="input-box">
                     <input type="password" name="new_password" placeholder="New Password" required>
                 </div>
+
                 <div class="input-box">
                     <input type="password" name="confirm_password" placeholder="Confirm Password" required>
                 </div>
+                
                 <button type="submit" class="submit-btn">Submit</button>
             </form>
 
             <button id="change-password-btn" class="btn1">Change Password</button>
-            <a href="{{ url_for('auth.confirmDelete') }}"><button id="delete-user-btn" class="btn2">Delete User</button></a>
-            
+            <a href="{{ url_for('auth.confirmDelete', user_id=user.id) }}"><button id="delete-user-btn" class="btn2">Delete User</button></a>
         </div>
     </div>
 
     <script>
-        function showConfirmationButtons() {
-        var confirmBtn = document.querySelector('.confirm-delete');
-        var cancelBtn = document.querySelector('.cancel-delete');
-        confirmBtn.style.display = 'block';
-        cancelBtn.style.display = 'block';
-        }
-
         document.getElementById('change-password-btn').addEventListener('click', function() {
             var inputBoxes = document.querySelectorAll('.input-box');
             var submitBtn = document.querySelector('.submit-btn');
@@ -90,7 +83,6 @@
             submitBtn.classList.add('fade-in');
             this.style.display = 'none';
         });
-
     </script>
 </body>
 </html>

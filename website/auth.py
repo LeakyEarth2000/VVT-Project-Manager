@@ -147,16 +147,13 @@ def deleteUser(user_id):
         flash('User not found', category='error')
     return redirect(url_for('auth.register'))
 
-@auth.route('/confirmDelete', methods=['GET', 'POST'])
+@auth.route('/confirmDelete/<int:user_id>', methods=['GET', 'POST'])
 @login_required
 @VVT_Admin_required
 def confirmDelete(user_id):
     user = User.query.get(user_id)
     if user:
-        db.session.delete(user)
-        db.session.commit()
-        flash('User deleted successfully', category='success')
+        return render_template('confirmDelete.html', user=user)
     else:
         flash('User not found', category='error')
         return redirect(url_for('auth.register'))
-    return render_template('confirmDelete.html')

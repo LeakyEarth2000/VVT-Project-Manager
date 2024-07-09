@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
+    <title>Confirm Delete</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='UserProfile/style.css') }}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
+    <style>
+        .confirm-delete {
+            background-color: #a70b0b;
+            color: white;
+        }
+        .cancel-delete {
+            background-color: green;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <div class="wrapper">
@@ -31,18 +40,13 @@
                 <p><strong>User Type:</strong> {{ user.usertype }}</p>
             </div>
 
-
-            <button id="change-password-btn" class="btn1">Change Password</button>
-            <button id="delete-user-btn" class="btn2" onclick="showConfirmationButtons()">Delete User</button>
-
             <form id="delete-user-form" action="{{ url_for('auth.deleteUser', user_id=user.id) }}" method="post">
-                <button type="submit" class="confirm-delete" style="display: none;">Delete</button>
+                <button type="submit" class="confirm-delete">Delete</button>
             </form>
 
-            <form id="goes-back" action="{{ url_for('auth.userProfile', user_id=user.id) }}" method="post">
-                <button type="submit" class="cancel-delete" style="display: none;">Actually, take me back</button>
+            <form id="goes-back" action="{{ url_for('auth.userProfile', user_id=user.id) }}" method="get">
+                <button type="submit" class="cancel-delete">Actually, take me back</button>
             </form>
-            
         </div>
     </div>
 </body>
