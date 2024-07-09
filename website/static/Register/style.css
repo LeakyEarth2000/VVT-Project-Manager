@@ -163,3 +163,11 @@ h1 {
 .user-wrapper a:hover {
     text-decoration: underline;
 }
+
+.back-arrow {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
