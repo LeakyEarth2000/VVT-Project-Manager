@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='UserDashboard/style.css') }}">
+    <title>My Notes - VVT Engineering</title>
+    <style>
+        .input-box, .submit-btn {
+            display: none;
+            margin-bottom: 10px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 2px solid #ccc;
+            border-radius: 10px;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+        }
+
+        .fade-in {
+            animation: fadeIn 2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .note-card {
+            position: relative;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo-tagline">
+            <div class="nav-logo">
+                <a href="https://vvteng.com.au/">
+                    <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo">
+                </a>
+            </div>
+    
+            <div class="nav-tagline">
+                <h4>VVT Engineering</h4>
+            </div>
+        </div>
+    
+        <ul class="nav-links">
+            <li class="link"><a href="https://vvteng.com.au/">Home</a></li>
+            <li class="link"><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            <li class="link"><a href="{{ url_for('views.about') }}">About</a></li>
+        </ul>
+    </nav>
+    
+    <header class="container">
+        <div class="content">
+            <span class="blur"></span>
+            <span class="blur"></span>
+            <h1>My Notes</h1>
+            <p>
+                Here are your personal notes.
+            </p>
+        </div>
+        <div class="image">
+            <img src="{{ url_for('static', filename='assets/header.png') }}">
+        </div>
+    </header>
+
+    <section class="notes-content">
+        {% for note in notes %}
+        <div class="note-card">
+            <p>{{ note.data }}</p>
+            <small>{{ note.date.strftime('%Y-%m-%d') }}</small>
+            <form action="{{ url_for('views.deleteNote', note_id=note.id) }}" method="post">
+                <button type="submit" class="delete-btn">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+    </section>
+
+    <button id="add-note-btn" class="btn">Add Note</button>
+
+    <form id="add-note-form" action="{{ url_for('views.addNote') }}" method="post">
+        <div class="input-box">
+            <input type="text" name="note_data" placeholder="Enter your note" required>
+        </div>
+        <div class="input-box">
+            <input type="date" name="note_date" required>
+        </div>
+        <button type="submit" class="submit-btn">Submit</button>
+    </form>
+
+    <div class="user-icon">
+        <a href="{{ url_for('auth.logout') }}">
+            <i class="ri-user-line"></i> {{ current_user.username }}
+        </a>
+    </div>
+
+    <div class="copyright">
+        2024. Made with ♥ by Yash Batish
+    </div>
+
+    <script>
+        document.getElementById('add-note-btn').addEventListener('click', function() {
+            var inputBoxes = document.querySelectorAll('.input-box');
+            var submitBtn = document.querySelector('.submit-btn');
+            inputBoxes.forEach(function(box) {
+                box.style.display = 'block';
+                box.classList.add('fade-in');
+            });
+            submitBtn.style.display = 'block';
+            submitBtn.classList.add('fade-in');
+            this.style.display = 'none';
+        });
+    </script>
+</body>
+
+</html>
