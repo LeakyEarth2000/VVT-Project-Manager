@@ -15,7 +15,7 @@ Welcome to VVT Project Manager, the ultimate destination for efficient and relia
 ![Admin Registration](https://github.com/user-attachments/assets/5ce11b54-7d1f-4d6a-bf53-b5e9580ff81f)
 
 ### Admin Authorisation
-- **Admin Registration**: Admins can register using a preset passphrase and 2FA passcode, via Google Authenticator.
+- **Admin Registration**: Admins can register using a preset passphrase (prior to launch, must label the passphrase as a secret environment variable) and 2FA passcode, via Google Authenticator.
 - **User Management**: Admins can add/remove users and set permissions.
 
 #### Process of registering
