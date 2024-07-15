@@ -28,7 +28,7 @@ Welcome to VVT Project Manager, the ultimate destination for efficient and relia
 #### Managing users
 ![Manage Users](https://github.com/user-attachments/assets/26f0e955-42ff-47ce-bbf6-dc0834a54f09)
 
-### Dashboard
+### Dashboard (Most likely will change interface)
 - **Project Overview**: Manage your projects efficiently and effectively.
 - **Notes**: View and manage your personal notes.
 - **Download**: Download projects as a .CSV
@@ -37,6 +37,9 @@ Welcome to VVT Project Manager, the ultimate destination for efficient and relia
 ### Notes Management
 - **Add Notes**: Users can add personal notes.
 - **Delete Notes**: Users can delete their notes.
+<br />
+
+***Only you can see your notes. No one else can***
 
 ### Manage Notes Page
 ![Manage Notes](https://github.com/user-attachments/assets/b4b3fc7c-ccae-4c0f-9a20-5d36eee0b958)
