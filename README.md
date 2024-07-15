@@ -1,4 +1,4 @@
-## As of 23/05/2024
+## As of 23/05/2024 (Updated last at 10/07/2024)
 I have created user credential system with .JSON file. It also works
 
 If username already exists, prints out that it already exists <br>
