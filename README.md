@@ -30,7 +30,6 @@ Welcome to VVT Project Manager, the ultimate destination for efficient and relia
 
 ### Dashboard
 - **Project Overview**: Manage your projects efficiently and effectively.
-- **Support**: Contact the support team for help.
 - **Notes**: View and manage your personal notes.
 - **Download**: Download projects as a .CSV
 ----
