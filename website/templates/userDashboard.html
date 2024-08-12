@@ -31,6 +31,16 @@
         </ul>
     </nav>
     
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="flash-message {{ category }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
     <header class="container">
         <div class="content">
             <span class="blur"></span>
@@ -45,16 +55,8 @@
             <img src="{{ url_for('static', filename='assets/header.png') }}">
         </div>
     </header>
-    
-    {% with messages = get_flashed_messages(with_categories=true) %}
-    {% if messages %}
-        {% for category, message in messages %}
-            <div class="flash-message {{ category }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-{% endwith %}
+
+
 
     <section class="dashboard-content">
         <div class="card">
@@ -75,6 +77,19 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(function(message) {
+                setTimeout(function() {
+                    message.style.opacity = '0';
+                    setTimeout(function() {
+                        message.remove();
+                    }, 500);
+                }, 2000);
+            });
+        });
+        </script>
 </body>
 
 </html>
