@@ -39,7 +39,7 @@
             <p>
                 This is your dashboard. Manage your projects and account settings here.
             </p>
-            <a href="#" class="btn" role="button" style="display: inline-block; text-align: center;">View Projects</a>
+            <a href="{{ url_for('views.projects') }}" class="btn" role="button" style="display: inline-block; text-align: center;">View Projects</a>
         </div>
         <div class="image">
             <img src="{{ url_for('static', filename='assets/header.png') }}">

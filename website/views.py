@@ -1,6 +1,6 @@
 from flask import Flask, flash, request, render_template, redirect, url_for, Blueprint
 from flask_login import login_required, current_user
-from .models import Note, db
+from .models import Note, Project, Task, db
 from datetime import datetime
 
 views = Blueprint('views', __name__)
@@ -43,3 +43,33 @@ def deleteNote(note_id):
         db.session.delete(note)
         db.session.commit()
     return redirect(url_for('views.notes'))
+
+@views.route('/projects')
+@login_required
+def projects():
+    if current_user.usertype != 'Team Member':
+        flash('Access denied. Only Team Members can view projects.', category='error')
+        return redirect(url_for('views.dashboard'))
+    
+    userProjects = Project.query.filter_by(user_id=current_user.id).all()
+    if not userProjects:
+        return render_template('noProjects.html')
+    return render_template('projectList.html', projects=userProjects)
+
+@views.route('/addProject', methods=['GET', 'POST'])
+@login_required
+def addProject():
+    if current_user.usertype != 'Team Member':
+        flash('Access denied. Only Team Members can add projects.', category='error')
+        return redirect(url_for('views.dashboard'))
+    
+    if request.method == 'POST':
+        name = request.form.get('name')
+        description = request.form.get('description')
+        new_project = Project(name=name, description=description, user_id=current_user.id)
+        db.session.add(new_project)
+        db.session.commit()
+        flash('Project added successfully!', category='success')
+        return redirect(url_for('views.projects'))
+    
+    return render_template('addProject.html')

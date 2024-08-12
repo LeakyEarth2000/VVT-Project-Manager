@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+    <li class="link"><a href="{{ url_for('views.projects') }}">Projects</a></li>
+    <title>{% block title %}VVT Engineering{% endblock %}</title>
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+    <nav>
+        <div class="logo-tagline">
+            <div class="nav-logo">
+                <a href="https://vvteng.com.au/">
+                    <img src="{{ url_for('static', filename='assets/vvtEng.png') }}" alt="VVT Engineering Logo">
+                </a>
+            </div>
+            <div class="nav-tagline">
+                <h4>VVT Engineering</h4>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li class="link"><a href="https://vvteng.com.au/">Home</a></li>
+            <li id="link1" class="link"><a href="{{ url_for('auth.login') }}">Login</a></li>
+            <li id="link2" class="link"><a href="{{ url_for('auth.register') }}">Register</a></li>
+            <li id="link3" class="link"><a href="{{ url_for('views.about') }}">About</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}
+        <!-- Content will be inserted here by child templates -->
+        {% endblock %}
+    </main>
+
+    <footer class="container">
+        <span class="blur"></span>
+        <span class="blur"></span>
+        <div class="column">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='assets/vvtEng.png') }}">
+            </div>
+            <p>VVT Engineering</p>
+            <div class="socials">
+                <a href="#"><i class="ri-youtube-line"></i></a>
+                <a href="#"><i class="ri-instagram-line"></i></a>
+                <a href="#"><i class="ri-twitter-line"></i></a>
+            </div>
+        </div>
+        <div class="column">
+            <h4>About Us</h4>
+            <a href="https://vvteng.com.au/services-2/">Services</a>
+            <a href="https://vvteng.com.au/projects-2/">Projects</a>
+        </div>
+        <div class="column">
+            <h4>Contact</h4>
+            <a href="https://vvteng.com.au/contact/">Contact Us</a>
+        </div>
+    </footer>
+
+    <div class="copyright">
+        2024. Made with ♥ by Yash Batish
+    </div>
+
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% endblock %}
+</body>
+
+</html>
