@@ -1,6 +1,6 @@
 from flask import Flask, flash, request, render_template, redirect, url_for, Blueprint
 from flask_login import login_required, current_user
-from .models import Note, Project, Task, db
+from .models import Note, User, Project, Task, db
 from datetime import datetime
 
 views = Blueprint('views', __name__)
@@ -47,7 +47,7 @@ def deleteNote(note_id):
 @views.route('/projects')
 @login_required
 def projects():
-    if current_user.usertype != 'Team Member':
+    if current_user.usertype != 'team_member':
         flash('Access denied. Only Team Members can view projects.', category='error')
         return redirect(url_for('views.dashboard'))
     
@@ -59,7 +59,7 @@ def projects():
 @views.route('/addProject', methods=['GET', 'POST'])
 @login_required
 def addProject():
-    if current_user.usertype != 'Team Member':
+    if current_user.usertype != 'team_member':
         flash('Access denied. Only Team Members can add projects.', category='error')
         return redirect(url_for('views.dashboard'))
     
