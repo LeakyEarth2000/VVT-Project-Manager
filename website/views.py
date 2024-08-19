@@ -95,6 +95,101 @@ def deleteProject(project_id):
         flash('Project deleted successfully.', category='success')
     return redirect(url_for('views.projects'))
 
+@views.route('/tasks')
+@login_required
+def tasks():
+    user_tasks = Task.query.filter_by(user_id=current_user.id).all()
+    if not user_tasks:
+        return render_template('noTasks.html')
+    return render_template('taskList.html', tasks=user_tasks)
+
+@views.route('/task/<int:task_id>')
+@login_required
+def task_detail(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        flash('You do not have permission to view this task.', category='error')
+        return redirect(url_for('views.tasks'))
+    return render_template('taskDetail.html', task=task)
+
+@views.route('/edit-task/<int:task_id>', methods=['GET', 'POST'])
+@login_required
+def editTask(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        flash('You do not have permission to edit this task.', category='error')
+        return redirect(url_for('views.tasks'))
+    
+    if request.method == 'POST':
+        task.name = request.form.get('name')
+        task.description = request.form.get('description')
+        task.status = request.form.get('status')
+        db.session.commit()
+        flash('Task updated successfully!', category='success')
+        return redirect(url_for('views.task_detail', task_id=task.id))
+    
+    return render_template('editTask.html', task=task)
+
+@views.route('/delete-task/<int:task_id>', methods=['POST'])
+@login_required
+def deleteTask(task_id):
+    task = Task.query.get_or_404(task_id)
+    if task.user_id != current_user.id:
+        flash('You do not have permission to delete this task.', category='error')
+    else:
+        db.session.delete(task)
+        db.session.commit()
+        flash('Task deleted successfully.', category='success')
+    return redirect(url_for('views.tasks'))
+
+@views.route('/download_tasks_csv')
+@login_required
+def download_tasks_csv():
+    import csv
+    from io import StringIO
+    from flask import make_response
+
+    user_tasks = Task.query.filter_by(user_id=current_user.id).all()
+
+    si = StringIO()
+    cw = csv.writer(si)
+    cw.writerow(['Task Name', 'Description', 'Status'])
+    for task in user_tasks:
+        cw.writerow([task.name, task.description, task.status])
+
+    output = make_response(si.getvalue())
+    output.headers["Content-Disposition"] = "attachment; filename=tasks.csv"
+    output.headers["Content-type"] = "text/csv"
+    return output
+
+@views.route('/project/<int:project_id>/tasks')
+@login_required
+def project_tasks(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != current_user.id:
+        flash('You do not have permission to view tasks for this project.', category='error')
+        return redirect(url_for('views.projects'))
+    
+    tasks = Task.query.filter_by(project_id=project_id).all()
+    return render_template('taskList.html', tasks=tasks, project=project)
+
+@views.route('/edit-project/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def editProject(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != current_user.id:
+        flash('You do not have permission to edit this project.', category='error')
+        return redirect(url_for('views.projects'))
+
+    if request.method == 'POST':
+        project.name = request.form.get('name')
+        project.description = request.form.get('description')
+        db.session.commit()
+        flash('Project updated successfully!', category='success')
+        return redirect(url_for('views.projects'))
+
+    return render_template('editProject.html', project=project)
+
 @views.route('/addTask/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def addTask(project_id):

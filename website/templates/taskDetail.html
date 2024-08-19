@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Task Details{% endblock %}
+
+{% block content %}
+<div class="task-detail-container">
+    <h1>{{ task.name }}</h1>
+    <p>{{ task.description }}</p>
+    <p>Status: {{ task.status }}</p>
+    <a href="{{ url_for('views.editTask', task_id=task.id) }}" class="btn-edit">Edit Task</a>
+    <form action="{{ url_for('views.deleteTask', task_id=task.id) }}" method="post" style="display:inline;">
+        <button type="submit" class="btn-delete">Delete Task</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .task-detail-container {
+        padding: 20px;
+        background-color: #333;
+        color: white;
+        border-radius: 10px;
+    }
+    .btn-edit, .btn-delete {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .btn-delete {
+        background-color: #dc3545;
+    }
+</style>
+{% endblock %}
