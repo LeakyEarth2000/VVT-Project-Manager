@@ -570,73 +570,11 @@ footer .column > a:hover{
     cursor: pointer;
 }
 
-.no-projects-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-}
-
-.no-projects-icon {
-    width: 64px;
-    height: 64px;
-    margin-bottom: 24px;
-}
-
-.no-projects-container h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.no-projects-container p {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 24px;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.confirm-delete-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-}
 
 .delete-project-icon {
     width: 64px;
     height: 64px;
     margin-bottom: 24px;
-}
-
-.confirm-delete-container h2 {
-    font-size: 24px;
-    font-weight: bold;
-    margin-bottom: 8px;
-}
-
-.confirm-delete-container p {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 24px;
-    max-width: 400px;
-}
-
-.button-group {
-    display: flex;
-    gap: 16px;
 }
 
 .btn {

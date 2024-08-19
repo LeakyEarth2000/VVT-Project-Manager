@@ -1,27 +1,19 @@
 {% extends "base.html" %}
-{% block title %}Tasks for {{ project.name }}{% endblock %}
+{% block title %}No Tasks{% endblock %}
 
 {% block content %}
-<div class="task-list-container">
-    <h1>Tasks for {{ project.name }}</h1>
-    <ul class="task-list">
-        {% for task in tasks %}
-        <li>{{ task.name }} - {{ task.progress }}%</li>
-        {% endfor %}
-    </ul>
+<div class="no-tasks-container">
+    <h1>No Tasks Found for {{ project.name }}</h1>
+    <p>You currently have no tasks for this project. Click the button below to add a new task.</p>
     <a href="{{ url_for('views.addTask', project_id=project.id) }}" class="btn-add-task">Add New Task</a>
 </div>
 {% endblock %}
 
 {% block styles %}
 <style>
-    .task-list-container {
+    .no-tasks-container {
         text-align: center;
         margin-top: 50px;
-    }
-    .task-list {
-        list-style-type: none;
-        padding-left: 0;
     }
     .btn-add-task {
         display: inline-block;

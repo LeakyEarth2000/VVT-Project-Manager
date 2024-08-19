@@ -2,6 +2,54 @@
 {% block title %}No Projects{% endblock %}
 
 {% block content %}
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+    }
+
+    body {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .no-projects-icon {
+        width: 64px;
+        height: 64px;
+        margin-bottom: 24px;
+    }
+
+    .no-projects-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .no-projects-container h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+    
+    .no-projects-container p {
+        font-size: 16px;
+        color: #666;
+        margin-bottom: 24px;
+        max-width: 400px;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+</style>
 <div class="no-projects-container no-scroll">
     <img src="{{ url_for('static', filename='assets/no-projects-icon.svg') }}" alt="No Projects Icon" class="no-projects-icon">
     <h2 style="color: white">No projects yet</h2>
@@ -11,10 +59,4 @@
 {% endblock %}
 
 {% block styles %}
-<style>
-    .no-scroll {
-        height: 100vh;
-        overflow: hidden;
-    }
-</style>
 {% endblock %}

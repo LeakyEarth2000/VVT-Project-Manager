@@ -222,3 +222,17 @@ def addTask(project_id):
         return redirect(url_for('views.projects'))
     
     return render_template('addTask.html', project=project, users=users)
+
+@views.route('/project/<int:project_id>/tasks')
+@login_required
+def projectTasks(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != current_user.id:
+        flash('You do not have permission to view tasks for this project.', category='error')
+        return redirect(url_for('views.projects'))
+    
+    tasks = Task.query.filter_by(project_id=project_id).all()
+    if not tasks:
+        return render_template('noTasksForProject.html', project=project)
+    
+    return render_template('taskList.html', project=project, tasks=tasks)
