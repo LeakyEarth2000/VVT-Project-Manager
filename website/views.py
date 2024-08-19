@@ -73,3 +73,24 @@ def addProject():
         return redirect(url_for('views.projects'))
     
     return render_template('addProject.html')
+
+@views.route('/confirm-delete-project/<int:project_id>')
+@login_required
+def confirmDeleteProject(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != current_user.id:
+        flash('You do not have permission to delete this project.', category='error')
+        return redirect(url_for('views.projects'))
+    return render_template('confirmDeleteProject.html', project=project)
+
+@views.route('/delete-project/<int:project_id>', methods=['POST'])
+@login_required
+def deleteProject(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != current_user.id:
+        flash('You do not have permission to delete this project.', category='error')
+    else:
+        db.session.delete(project)
+        db.session.commit()
+        flash('Project deleted successfully.', category='success')
+    return redirect(url_for('views.projects'))
