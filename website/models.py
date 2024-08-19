@@ -31,5 +31,7 @@ class Task(db.Model):
     name = db.Column(db.String(100))
     description = db.Column(db.String(500))
     status = db.Column(db.String(20))
+    priority = db.Column(db.String(20))
+    progress = db.Column(db.Integer)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     project = db.relationship('Project', back_populates='tasks')

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}Add Task{% endblock %}
+
+{% block content %}
+<div class="add-task-container no-scroll">
+    <h1>Add New Task</h1>
+    <form method="POST" class="add-task-form">
+        <div class="form-group">
+            <label for="name" class="form-label">Task Name</label>
+            <input type="text" id="name" name="name" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="assigned_personnel" class="form-label">Assigned Personnel</label>
+            <select id="assigned_personnel" name="assigned_personnel" class="form-input" required>
+                {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="due_date" class="form-label">Due Date</label>
+            <input type="date" id="due_date" name="due_date" class="form-input" required>
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label">Task Information</label>
+            <textarea id="description" name="description" class="form-input" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="priority" class="form-label">Priority Level</label>
+            <input type="range" id="priority" name="priority" min="1" max="5" class="form-input">
+        </div>
+        <div class="form-group">
+            <label for="progress" class="form-label">Progress</label>
+            <input type="number" id="progress" name="progress" min="0" max="100" class="form-input">
+        </div>
+        <button type="submit" class="submit-btn">Add Task</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .no-scroll {
+        height: 100vh;
+        overflow: hidden;
+    }
+    .add-task-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        text-align: center;
+        padding: 20px;
+    }
+    .add-task-form {
+        width: 100%;
+        max-width: 400px;
+    }
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+    }
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    .submit-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .submit-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}

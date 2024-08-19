@@ -2,24 +2,27 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_login import LoginManager
+from flask_migrate import Migrate
 
+
+app = Flask(__name__)
 db = SQLAlchemy()
 DB_NAME = "database.db"
 
 def createApp():
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'QWERTY' # secret key is used for session cookies and CSRF attacks. Discuss when doing security
+    app.config['SECRET_KEY'] = 'QWERTY'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
+    
+    migrate = Migrate(app, db)  # Initialize Flask-Migrate here
 
-    
-    
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Note
+    from .models import User, Note, Task, Project  # Ensure all models are imported
     
     createDatabase(app)
 
@@ -38,5 +41,5 @@ def createDatabase(app):
         with app.app_context():
             db.create_all()
         print(
-        "------------------------------------\nDatabase initalised and created \n------------------------------------\n2024. Made with ♥ by Yash Batish\n"
+        "------------------------------------\nDatabase initialized and created \n------------------------------------\n2024. Made with ♥ by Yash Batish\n"
     )
