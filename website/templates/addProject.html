@@ -4,7 +4,7 @@
 {% block content %}
 <div class="add-project-container no-scroll">
     <h1>Add New Project</h1>
-    <form method="POST">
+    <form method="POST" class="add-project-form">
         <div class="form-group">
             <label for="name" class="form-label">Project Name</label>
             <input type="text" id="name" name="name" class="form-input" required>
@@ -13,7 +13,7 @@
             <label for="description" class="form-label">Project Description</label>
             <textarea id="description" name="description" class="form-input" rows="4"></textarea>
         </div>
-        <button type="submit">Add Project</button>
+        <button type="submit" class="submit-btn">Add Project</button>
     </form>
 </div>
 {% endblock %}
@@ -30,6 +30,47 @@
         justify-content: center;
         align-items: center;
         height: 100%;
+        text-align: center;
+        padding: 20px;
+    }
+    .add-project-form {
+        width: 100%;
+        max-width: 400px;
+    }
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    .form-label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+    }
+    .form-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+    }
+    .submit-btn {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .submit-btn:hover {
+        background-color: #0056b3;
     }
 </style>
 {% endblock %}

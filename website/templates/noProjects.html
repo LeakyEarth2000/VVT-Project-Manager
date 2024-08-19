@@ -2,10 +2,19 @@
 {% block title %}No Projects{% endblock %}
 
 {% block content %}
-<div class="no-projects-container">
+<div class="no-projects-container no-scroll">
     <img src="{{ url_for('static', filename='assets/no-projects-icon.svg') }}" alt="No Projects Icon" class="no-projects-icon">
     <h2 style="color: white">No projects yet</h2>
     <p>Create a project to get started</p>
     <a href="{{ url_for('views.addProject') }}" class="btn btn-primary">New Project</a>
 </div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .no-scroll {
+        height: 100vh;
+        overflow: hidden;
+    }
+</style>
 {% endblock %}
