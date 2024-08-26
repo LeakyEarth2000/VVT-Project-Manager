@@ -4,25 +4,25 @@ from os import path
 from flask_login import LoginManager
 from flask_migrate import Migrate
 
-
 app = Flask(__name__)
 db = SQLAlchemy()
-DB_NAME = "database.db"
+db_name = "database.db"
 
 def createApp():
+    # create and configure the app
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = 'QWERTY'
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    app.config['SECRET_KEY'] = 'qwerty'
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_name}'
     db.init_app(app)
     
-    migrate = Migrate(app, db)  # Initialize Flask-Migrate here
+    migrate = Migrate(app, db)  # initialize flask-migrate here
 
     from .views import views
     from .auth import auth
     app.register_blueprint(views, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 
-    from .models import User, Note, Task, Project  # Ensure all models are imported
+    from .models import User, Note, Task, Project  # ensure all models are imported
     
     createDatabase(app)
 
@@ -37,9 +37,10 @@ def createApp():
     return app
     
 def createDatabase(app):
-    if not path.exists(f'website/{DB_NAME}'):
+    # create the database if it doesn't exist
+    if not path.exists(f'website/{db_name}'):
         with app.app_context():
             db.create_all()
         print(
-        "------------------------------------\nDatabase initialized and created \n------------------------------------\n2024. Made with ♥ by Yash Batish\n"
+        "------------------------------------\ndatabase initialized and created \n------------------------------------\n2024. made with ♥ by yash batish\n"
     )

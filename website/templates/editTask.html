@@ -1,72 +1,53 @@
 {% extends "base.html" %}
 {% block title %}Edit Task{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='FormStyles/formStyles.css') }}">
+<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+{% endblock %}
+
 {% block content %}
-<div class="edit-task-container" style="color: white;">
-    <h1>Edit Task</h1>
-    <form method="POST">
-        <div class="form-group">
+<div class="wrapper">
+    <div class="back-arrow">
+        <a href="{{ url_for('views.home') }}">
+            <i class='bx bx-arrow-back'></i>
+        </a>
+    </div>
+    <form method="POST" class="form">
+        <h1>Edit Task</h1>
+        <div class="input-box">
             <label for="name">Task Name</label>
-            <input type="text" id="name" name="name" value="{{ task.name }}" required>
+            <input type="text" id="name" name="name" value="{{ task.name }}" placeholder="Task Name" required>
+            <i class='bx bxs-pencil'></i>
         </div>
-        <div class="form-group">
+        <div class="input-box">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" placeholder="Description" required>{{ task.description }}</textarea>
+            <i class='bx bxs-info-circle'></i>
+        </div>
+        <div class="input-box">
+            <label for="status">Status</label>
+            <input type="text" id="status" name="status" value="{{ task.status }}" placeholder="Status" required>
+            <i class='bx bxs-check-circle'></i>
+        </div>
+        <div class="input-box">
             <label for="assigned_personnel">Assigned Personnel</label>
             <select id="assigned_personnel" name="assigned_personnel" required>
                 {% for user in users %}
                 <option value="{{ user.id }}" {% if user.id == task.assigned_personnel_id %}selected{% endif %}>{{ user.username }}</option>
                 {% endfor %}
             </select>
+            <i class='bx bxs-user'></i>
         </div>
-        <div class="form-group">
-            <label for="due_date" class="form-label">Due Date</label>
-            <input type="date" id="due_date" name="due_date" class="form-input" required>
+        <div class="input-box">
+            <label for="priority">Priority Level</label>
+            <input type="range" id="priority" name="priority" min="1" max="5" value="{{ task.priority }}">
+            <i class='bx bxs-flag'></i>
         </div>
-        <div class="form-group">
-            <label for="description">Task Information</label>
-            <textarea id="description" name="description" required>{{ task.description }}</textarea>
-        </div>
-        <div class="form-group">
-            <label for="priority">Priority</label>
-            <input type="range" id="priority" name="priority" min="1" max="5" value="{{ task.priority }}" required>
-        </div>
-        <div class="form-group">
-            <label for="status">Progress</label>
-            <input type="text" id="status" name="status" value="{{ task.status }}" required>
-        </div>
-        <button type="submit" class="btn-submit">Update Task</button>
+        <button type="submit" class="btn">Update Task</button>
     </form>
 </div>
 {% endblock %}
 
 {% block styles %}
-<style>
-    .edit-task-container {
-        padding: 20px;
-        background-color: #333;
-        color: white;
-        border-radius: 10px;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    .form-group label {
-        display: block;
-        margin-bottom: 5px;
-    }
-    .form-group input, .form-group textarea, .form-group select {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-    .btn-submit {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #28a745;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-</style>
 {% endblock %}

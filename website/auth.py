@@ -20,13 +20,15 @@ print(correctPassword)
 def VVT_Admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        # check if the current user is anonymous or not an admin
         if current_user.is_anonymous or current_user.username != 'VVT_Admin':
-            abort(403)  # Forbidden
+            abort(403)  # forbidden
         return f(*args, **kwargs)
     return decorated_function
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    # handle login logic
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -46,16 +48,18 @@ def login():
 @auth.route('/logout')
 @login_required
 def logout():
+    # handle logout logic
     logout_user()
     return redirect(url_for('views.home'))
 
-
 @auth.route('/registerAuth', methods=['GET', 'POST'])
 def registerAuth():
+    # handle registration authorization logic
     if request.method == 'POST':
         user_passcode = request.form.get('passcode', '')
         user_password = request.form.get('password', '')
-        if totp.verify(str(user_passcode)) or (user_passcode == '1234' and user_password == correctPassword):            # create a temporary user object for the session
+        if totp.verify(str(user_passcode)) or (user_passcode == '1234' and user_password == correctPassword):
+            # create a temporary user object for the session
             VVT_Admin = User.query.filter_by(username='VVT_Admin').first()
             if not VVT_Admin:
                 VVT_Admin = User(username='VVT_Admin', password=generate_password_hash(correctPassword, method='pbkdf2:sha256'))
@@ -73,6 +77,7 @@ def registerAuth():
 @login_required
 @VVT_Admin_required
 def register():
+    # handle user registration logic
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -93,7 +98,7 @@ def register():
             flash('Account created! Please login', category='success')
             return redirect(url_for('auth.register'))
 
-    # Fetch all users from the database
+    # fetch all users from the database
     users = User.query.all()
     print("Fetched users:", users)
     return render_template('register.html', users=users)
@@ -102,9 +107,9 @@ def register():
 @login_required
 @VVT_Admin_required
 def userProfile(user_id):
+    # render user profile
     user = User.query.get(user_id)
     if user:
-        # Render user profile template with the user object
         return render_template('userProfile.html', user=user)
     else:
         flash('User not found', category='error')
@@ -114,6 +119,7 @@ def userProfile(user_id):
 @login_required
 @VVT_Admin_required
 def changePassword(user_id):
+    # handle password change
     user = User.query.get(user_id)
     if user:
         new_password = request.form.get('new_password')
@@ -136,6 +142,7 @@ def changePassword(user_id):
 @login_required
 @VVT_Admin_required
 def deleteUser(user_id):
+    # handle user deletion
     user = User.query.get(user_id)
     if user:
         db.session.delete(user)
@@ -149,6 +156,7 @@ def deleteUser(user_id):
 @login_required
 @VVT_Admin_required
 def confirmDelete(user_id):
+    # render confirmation page for deleting a user
     user = User.query.get(user_id)
     if user:
         return render_template('confirmDelete.html', user=user)

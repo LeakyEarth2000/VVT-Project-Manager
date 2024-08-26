@@ -1,0 +1,58 @@
+/* formStyles.css */
+
+/* General form styles */
+.form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #333; /* Dark background */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: white; /* Text color */
+}
+
+.input-box {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-box input,
+.input-box select,
+.input-box textarea {
+    width: 100%;
+    padding: 10px;
+    background: #222; /* Darker input background */
+    border: 1px solid #555; /* Border color */
+    border-radius: 5px;
+    color: white; /* Text color */
+}
+
+.input-box i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(35%);
+    color: #888;
+}
+
+.input-box-priority i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(100%);
+    color: #888;
+}
+
+.btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Button background color */
+    border: none;
+    border-radius: 5px;
+    color: white; /* Button text color */
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Button hover color */
+}
