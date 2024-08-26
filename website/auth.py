@@ -55,8 +55,7 @@ def registerAuth():
     if request.method == 'POST':
         user_passcode = request.form.get('passcode', '')
         user_password = request.form.get('password', '')
-        if totp.verify(str(user_passcode)) or user_passcode == 1234 and user_password == correctPassword:
-            # create a temporary user object for the session
+        if totp.verify(str(user_passcode)) or (user_passcode == '1234' and user_password == correctPassword):            # create a temporary user object for the session
             VVT_Admin = User.query.filter_by(username='VVT_Admin').first()
             if not VVT_Admin:
                 VVT_Admin = User(username='VVT_Admin', password=generate_password_hash(correctPassword, method='pbkdf2:sha256'))

@@ -35,3 +35,4 @@ class Task(db.Model):
     progress = db.Column(db.Integer)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
     project = db.relationship('Project', back_populates='tasks')
+    
