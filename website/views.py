@@ -113,27 +113,26 @@ def task_detail(task_id):
         return redirect(url_for('views.tasks'))
     return render_template('taskDetail.html', task=task)
 
-@views.route('/edit-task/<int:task_id>', methods=['GET', 'POST'])
+@views.route('/editTask/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def editTask(task_id):
-    task = Task.query.get_or_404(task_id)
-    project = Project.query.get(task.project_id)
-    if project.user_id != current_user.id:
-        flash('You do not have permission to edit this task.', category='error')
-        return redirect(url_for('views.tasks'))
-    
+    task = Task.query.get(task_id)
+    if not task:
+        flash('Task not found', category='error')
+        return redirect(url_for('views.dashboard'))
+
     if request.method == 'POST':
         task.name = request.form.get('name')
         task.description = request.form.get('description')
         task.status = request.form.get('status')
         task.priority = request.form.get('priority')
-        task.assigned_personnel_id = request.form.get('assigned_personnel')
+        task.progress = request.form.get('progress')
+
         db.session.commit()
-        flash('Task updated successfully!', category='success')
-        return redirect(url_for('views.tasks'))
-    
-    users = User.query.filter(User.usertype != 'viewer').all()
-    return render_template('editTask.html', task=task, users=users)
+        flash('Task updated successfully', category='success')
+        return redirect(url_for('views.dashboard'))
+
+    return render_template('editTask.html', task=task)
 
 @views.route('/delete-task/<int:task_id>', methods=['POST'])
 @login_required
