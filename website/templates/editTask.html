@@ -18,16 +18,20 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" required>{{ task.description }}</textarea>
+            <label for="due_date" class="form-label">Due Date</label>
+            <input type="date" id="due_date" name="due_date" class="form-input" required>
         </div>
         <div class="form-group">
-            <label for="status">Status</label>
-            <input type="text" id="status" name="status" value="{{ task.status }}" required>
+            <label for="description">Task Information</label>
+            <textarea id="description" name="description" required>{{ task.description }}</textarea>
         </div>
         <div class="form-group">
             <label for="priority">Priority</label>
             <input type="range" id="priority" name="priority" min="1" max="5" value="{{ task.priority }}" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Progress</label>
+            <input type="text" id="status" name="status" value="{{ task.status }}" required>
         </div>
         <button type="submit" class="btn-submit">Update Task</button>
     </form>
