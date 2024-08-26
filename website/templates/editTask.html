@@ -2,12 +2,20 @@
 {% block title %}Edit Task{% endblock %}
 
 {% block content %}
-<div class="edit-task-container">
+<div class="edit-task-container" style="color: white;">
     <h1>Edit Task</h1>
     <form method="POST">
         <div class="form-group">
             <label for="name">Task Name</label>
             <input type="text" id="name" name="name" value="{{ task.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="assigned_personnel">Assigned Personnel</label>
+            <select id="assigned_personnel" name="assigned_personnel" required>
+                {% for user in users %}
+                <option value="{{ user.id }}" {% if user.id == task.assigned_personnel_id %}selected{% endif %}>{{ user.username }}</option>
+                {% endfor %}
+            </select>
         </div>
         <div class="form-group">
             <label for="description">Description</label>
@@ -16,6 +24,10 @@
         <div class="form-group">
             <label for="status">Status</label>
             <input type="text" id="status" name="status" value="{{ task.status }}" required>
+        </div>
+        <div class="form-group">
+            <label for="priority">Priority</label>
+            <input type="range" id="priority" name="priority" min="1" max="5" value="{{ task.priority }}" required>
         </div>
         <button type="submit" class="btn-submit">Update Task</button>
     </form>
@@ -37,7 +49,7 @@
         display: block;
         margin-bottom: 5px;
     }
-    .form-group input, .form-group textarea {
+    .form-group input, .form-group textarea, .form-group select {
         width: 100%;
         padding: 10px;
         border: 1px solid #ccc;

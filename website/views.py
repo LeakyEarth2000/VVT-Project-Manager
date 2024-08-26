@@ -107,7 +107,8 @@ def tasks():
 @login_required
 def task_detail(task_id):
     task = Task.query.get_or_404(task_id)
-    if task.user_id != current_user.id:
+    project = Project.query.get(task.project_id)
+    if project.user_id != current_user.id:
         flash('You do not have permission to view this task.', category='error')
         return redirect(url_for('views.tasks'))
     return render_template('taskDetail.html', task=task)
@@ -116,7 +117,8 @@ def task_detail(task_id):
 @login_required
 def editTask(task_id):
     task = Task.query.get_or_404(task_id)
-    if task.user_id != current_user.id:
+    project = Project.query.get(task.project_id)
+    if project.user_id != current_user.id:
         flash('You do not have permission to edit this task.', category='error')
         return redirect(url_for('views.tasks'))
     
@@ -124,11 +126,14 @@ def editTask(task_id):
         task.name = request.form.get('name')
         task.description = request.form.get('description')
         task.status = request.form.get('status')
+        task.priority = request.form.get('priority')
+        task.assigned_personnel_id = request.form.get('assigned_personnel')
         db.session.commit()
         flash('Task updated successfully!', category='success')
-        return redirect(url_for('views.task_detail', task_id=task.id))
+        return redirect(url_for('views.tasks'))
     
-    return render_template('editTask.html', task=task)
+    users = User.query.filter(User.usertype != 'viewer').all()
+    return render_template('editTask.html', task=task, users=users)
 
 @views.route('/delete-task/<int:task_id>', methods=['POST'])
 @login_required
