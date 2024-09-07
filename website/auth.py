@@ -62,7 +62,7 @@ def registerAuth():
             # create a temporary user object for the session
             VVT_Admin = User.query.filter_by(username='VVT_Admin').first()
             if not VVT_Admin:
-                VVT_Admin = User(username='VVT_Admin', password=generate_password_hash(correctPassword, method='pbkdf2:sha256'))
+                VVT_Admin = User(username='VVT_Admin', password=generate_password_hash(correctPassword, method='pbkdf2:sha256'), usertype='admin')
                 db.session.add(VVT_Admin)
                 db.session.commit()
             login_user(VVT_Admin)

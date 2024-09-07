@@ -33,6 +33,7 @@
             <label for="progress" class="form-label">Progress</label>
             <input type="number" id="progress" name="progress" min="0" max="100" class="form-input">
         </div>
+        <input type="hidden" name="project_id" value="{{ project.id }}">
         <button type="submit" class="submit-btn">Add Task</button>
     </form>
 </div>
