@@ -3,23 +3,39 @@
 
 {% block content %}
 <div class="task-list-container no-scroll">
-    <h1 style="color: white;">Tasks for {{ project.name }}</h1>
+    {% if project %}
+        <h1 style="color: white;">Tasks for {{ project.name }}</h1>
+    {% else %}
+        <h1 style="color: white;">Your Tasks</h1>
+    {% endif %}
     <div class="task-list-wrapper">
-        <ul class="task-list">
-            {% for task in tasks %}
-            <li>
-                <a href="{{ url_for('views.editTask', task_id=task.id) }}" style="color: white;">{{ task.name }}</a>
-                <div class="task-actions">
-                    <a href="{{ url_for('views.editTask', task_id=task.id) }}" class="btn-edit">Edit</a>
-                    <form action="{{ url_for('views.deleteTask', task_id=task.id) }}" method="post" style="display:inline;">
-                        <button type="submit" class="btn-delete">Delete</button>
-                    </form>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td><a href="{{ url_for('views.editTask', task_id=task.id) }}" style="color: white;">{{ task.name }}</a></td>
+                    <td style="color: white">{{ task.description }}</td>
+                    <td style="color: white">{{ task.due_date }}</td>
+                    <td>
+                        <a href="{{ url_for('views.editTask', task_id=task.id) }}" class="btn-edit">Edit</a>
+                        <a href="{{ url_for('views.deleteTask', task_id=task.id) }}" class="btn-delete">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-    <a href="{{ url_for('views.addTask', project_id=project.id) }}" class="btn-add-task">Add New Task</a>
+    {% if project %}
+        <a href="{{ url_for('views.addTask', project_id=project.id) }}" class="btn-add-task">Add New Task</a>
+    {% endif %}
 </div>
 {% endblock %}
 
@@ -37,31 +53,37 @@
         padding: 20px;
         border-radius: 10px;
     }
-    .task-list {
-        list-style-type: none;
-        padding: 0;
+    .task-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
     }
-    .task-list li {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border-bottom: 1px solid #555;
+    .task-table th, .task-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
     }
-    .task-actions a, .task-actions button {
-        margin-left: 10px;
-        color: #fff;
+    .task-table th {
+        background-color: #f2f2f2;
+    }
+    .btn-edit, .btn-delete {
+        margin-right: 10px;
+        color: white;
         text-decoration: none;
-        background: none;
-        border: none;
-        cursor: pointer;
+        padding: 5px 10px;
+        background-color: #06539b;
+        border-radius: 5px;
+    }
+    .btn-delete {
+        background-color: #dc3545;
     }
     .btn-add-task {
         display: inline-block;
         margin-top: 20px;
         padding: 10px 20px;
-        background-color: #28a745;
-        color: #fff;
+        background-color: #06539b;
+        color: white;
         text-decoration: none;
         border-radius: 5px;
     }

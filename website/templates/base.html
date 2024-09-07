@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='UserDashboard/style.css') }}">
     <title>{% block title %}VVT Engineering{% endblock %}</title>
-    {% block extra_head %}{% endblock %}
+    {% block extra_head %}
+    <!-- Add any extra head content here -->
+    {% endblock %}
 </head>
 
 <body>
@@ -29,11 +31,12 @@
         </ul>
     </nav>
 
-    <main>
-        {% block content %}
-        <!-- content will be inserted here by child templates -->
-        {% endblock %}
-    </main>
+    <body>
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+        {% block styles %}{% endblock %}
+    </body>
 
     <div class="copyright">
         2024. Made with ♥ by Yash Batish
