@@ -35,5 +35,6 @@ class Task(db.Model):
     status = db.Column(db.String(50), nullable=False)
     priority = db.Column(db.String(50), nullable=False)
     progress = db.Column(db.String(50), nullable=False)
+    due_date = db.Column(db.Date, nullable=True)  # Add this line
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

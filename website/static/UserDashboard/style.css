@@ -393,6 +393,7 @@ footer .column > a:hover{
 .copyright{
     max-width: 1200px;
     margin: auto;
+    margin-top: -100px;
     padding: 1rem;
     color: #fff;
     font-size: 0.8rem;

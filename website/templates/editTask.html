@@ -25,6 +25,10 @@
             <textarea id="description" name="description" placeholder="Description" required>{{ task.description }}</textarea>
             <i class='bx bxs-info-circle'></i>
         </div>
+
+        <label for="due_date">Due Date</label>
+        <input type="date" id="due_date" name="due_date" value="{{ task.due_date }}">
+
         <div class="input-box">
             <label for="status">Status</label>
             <input type="text" id="status" name="status" value="{{ task.status }}" placeholder="Status" required>
