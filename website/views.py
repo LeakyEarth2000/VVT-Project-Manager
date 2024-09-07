@@ -198,7 +198,6 @@ def editProject(project_id):
 @views.route('/addTask/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def addTask(project_id):
-    # handle adding a new task to a project
     project = Project.query.get_or_404(project_id)
     if current_user.usertype != 'team_member':
         flash('Access denied. Only Team Members can add tasks.', category='error')
@@ -208,32 +207,24 @@ def addTask(project_id):
     
     if request.method == 'POST':
         name = request.form.get('name')
+        assigned_personnel_id = request.form.get('assigned_personnel')
+        due_date = request.form.get('due_date')
         description = request.form.get('description')
-        status = request.form.get('status', 'Not Started')
-        priority = request.form.get('priority', '1')
-        progress = request.form.get('progress', '0')
-        user_id = request.form.get('assigned_personnel')
-
-        # Debugging statements
-        print(f"Assigned Personnel (user_id): {user_id}")
-
-        if not user_id:
-            return "User ID is missing", 400
-
+        priority = request.form.get('priority')
+        progress = request.form.get('progress')
+        
         new_task = Task(
             name=name,
             description=description,
-            status=status,
+            status='Not Started',
             priority=priority,
             progress=progress,
-            project_id=project_id,
-            user_id=user_id
+            project_id=project_id
         )
-
         db.session.add(new_task)
         db.session.commit()
-
-        return redirect(url_for('views.projectTasks', project_id=project_id))
+        flash('Task added successfully!', category='success')
+        return redirect(url_for('views.projects'))
     
     return render_template('addTask.html', project=project, users=users)
 
