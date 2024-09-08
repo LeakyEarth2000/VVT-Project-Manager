@@ -15,11 +15,13 @@
     </div>
     <form method="POST" class="form">
         <h1>Edit Task</h1>
+
         <div class="input-box">
             <label for="name">Task Name</label>
             <input type="text" id="name" name="name" value="{{ task.name }}" placeholder="Task Name" required>
             <i class='bx bxs-pencil'></i>
         </div>
+
         <div class="input-box">
             <label for="description">Description</label>
             <textarea id="description" name="description" placeholder="Description" required>{{ task.description }}</textarea>
@@ -34,6 +36,7 @@
             <input type="text" id="status" name="status" value="{{ task.status }}" placeholder="Status" required>
             <i class='bx bxs-check-circle'></i>
         </div>
+
         <div class="input-box">
             <label for="assigned_personnel">Assigned Personnel</label>
             <select id="assigned_personnel" name="assigned_personnel" required>
@@ -43,15 +46,20 @@
             </select>
             <i class='bx bxs-user'></i>
         </div>
+
         <div class="input-box">
             <label for="priority">Priority Level</label>
             <input type="range" id="priority" name="priority" min="1" max="5" value="{{ task.priority }}">
             <i class='bx bxs-flag'></i>
         </div>
+        
+        <div class="input-box">
+            <label for="progress">Progress (%)</label>
+            <input type="number" id="progress" name="progress" min="0" max="100" value="{{ task.progress }}" required>
+            <i class='bx bx-bar-chart'></i>
+        </div>
+
         <button type="submit" class="btn">Update Task</button>
     </form>
 </div>
-{% endblock %}
-
-{% block styles %}
 {% endblock %}

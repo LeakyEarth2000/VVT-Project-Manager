@@ -1,38 +1,141 @@
 {% extends "base.html" %}
-{% block title %}Task Details{% endblock %}
+{% block title %}Tasks{% endblock %}
 
 {% block content %}
-<div class="task-detail-container">
-    <h1>{{ task.name }}</h1>
-    <p>{{ task.description }}</p>
-    <p>Status: {{ task.status }}</p>
-    <a href="{{ url_for('views.editTask', task_id=task.id) }}" class="btn-edit">Edit Task</a>
-    <form action="{{ url_for('views.deleteTask', task_id=task.id) }}" method="post" style="display:inline;">
-        <button type="submit" class="btn-delete">Delete Task</button>
+<div class="task-list-container no-scroll">
+    {% if project %}
+        <h1 style="color: white;">Tasks for {{ project.name }}</h1>
+    {% else %}
+        <h1 style="color: white;">Your Tasks</h1>
+    {% endif %}
+    <div class="task-list-wrapper">
+        <table class="task-table">
+            <thead>
+                <tr>
+                    <th>Task Name</th>
+                    <th>Description</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Priority</th>
+                    <th>Progress</th>
+                    <th>Assigned Personnel</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for task in tasks %}
+                <tr>
+                    <td><a href="{{ url_for('views.editTask', task_id=task.id) }}" style="color: white;">{{ task.name }}</a></td>
+                    <td style="color: white">{{ task.description }}</td>
+                    <td style="color: white">{{ task.due_date or 'No due date' }}</td>
+                    <td style="color: white">{{ task.status }}</td>
+                    <td style="color: white">{{ task.priority }}</td>
+                    <td style="color: white;">
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill progress-{{ task.progress | int // 10 * 10 }}"></div>
+                        </div>
+                    </td>
+                                      
+                    
+                    <td style="color: white">{{ task.assigned_personnel }}</td>
+                    <td>
+                        <a href="{{ url_for('views.editTask', task_id=task.id) }}" class="btn-edit">Edit</a>
+                        <form action="{{ url_for('views.deleteTask', task_id=task.id) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if project %}
+        <a href="{{ url_for('views.addTask', project_id=project.id) }}" class="btn-add-task">Add New Task</a>
+    <a href="{{ url_for('views.export_tasks', project_id=project.id) }}" class="btn-export-task">Export Tasks as CSV</a>
+    <form method="POST" action="{{ url_for('views.upload_tasks', project_id=project.id) }}" enctype="multipart/form-data" onsubmit="return validateCSV()">
+        <input type="file" name="file" id="file" accept=".csv" required>
+        <button type="submit" class="btn-upload-task">Upload CSV</button>
     </form>
+    {% endif %}
 </div>
+    
+
 {% endblock %}
 
 {% block styles %}
 <style>
-    .task-detail-container {
+    .no-scroll {
+        height: 100vh;
+        overflow: hidden;
+    }
+    .task-list-container {
         padding: 20px;
+    }
+    .task-list-wrapper {
         background-color: #333;
-        color: white;
+        padding: 20px;
         border-radius: 10px;
     }
+    .task-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 18px;
+        text-align: left;
+    }
+    .task-table th, .task-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+    .task-table th {
+        background-color: #f2f2f2;
+    }
     .btn-edit, .btn-delete {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
+        margin-right: 10px;
+        color: white;
         text-decoration: none;
+        padding: 5px 10px;
+        background-color: #06539b;
         border-radius: 5px;
-        cursor: pointer;
     }
     .btn-delete {
         background-color: #dc3545;
     }
+    .btn-add-task, .btn-export-task, .btn-upload-task {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #06539b;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+    }
 </style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function validateCSV() {
+        const fileInput = document.getElementById('file');
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const lines = text.split('\n');
+            const headers = lines[0].split(',');
+
+            const requiredHeaders = ['Name', 'Description', 'Status', 'Priority', 'Progress', 'Due Date', 'Assigned Personnel'];
+            const extraHeaders = headers.filter(header => !requiredHeaders.includes(header));
+
+            if (extraHeaders.length > 0) {
+                alert('The CSV file contains extra fields: ' + extraHeaders.join(', ') + '. Please ensure the file only contains the relevant fields.');
+                return false;
+            }
+        };
+
+        reader.readAsText(file);
+        return true;
+    }
+</script>
 {% endblock %}

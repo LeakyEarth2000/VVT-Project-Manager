@@ -121,6 +121,11 @@ def task_detail(task_id):
         return redirect(url_for('views.tasks'))
     return render_template('taskDetail.html', task=task)
 
+@views.route('/task_list')
+def task_list():
+    tasks = Task.query.all()  # Fetch all tasks (or filter them based on user/project)
+    return render_template('taskList.html', tasks=tasks)
+
 @views.route('/editTask/<int:task_id>', methods=['GET', 'POST'])
 @login_required
 def editTask(task_id):
@@ -137,6 +142,7 @@ def editTask(task_id):
         task.status = request.form.get('status')
         assigned_personnel_id = request.form.get('assigned_personnel')
         task.assigned_personnel_id = assigned_personnel_id  # Update assigned personnel
+        task.progress = request.form['progress']  # Update the task progress
 
         # Convert date string to Python date object
         due_date_str = request.form.get('due_date')
@@ -145,7 +151,7 @@ def editTask(task_id):
 
         db.session.commit()
         flash('Task updated successfully!', category='success')
-        return redirect(url_for('views.task_detail', task_id=task.id))
+        return redirect(url_for('views.task_list', task_id=task.id))
     
     return render_template('editTask.html', task=task, users=users)
 
