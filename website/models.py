@@ -38,3 +38,4 @@ class Task(db.Model):
     due_date = db.Column(db.Date, nullable=True)  # Add this line
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    

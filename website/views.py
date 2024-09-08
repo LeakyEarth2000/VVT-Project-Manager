@@ -2,6 +2,10 @@ from flask import Flask, flash, request, render_template, redirect, url_for, Blu
 from flask_login import login_required, current_user
 from .models import Note, User, Project, Task, db
 from datetime import datetime
+import csv
+from io import StringIO
+from flask import Response, make_response
+import pandas as pd
 
 views = Blueprint('views', __name__)
 
@@ -102,7 +106,9 @@ def deleteProject(project_id):
 def tasks():
     user_tasks = Task.query.filter_by(user_id=current_user.id).all()
     if not user_tasks:
-        return render_template('noTasks.html')
+        # Assuming you have a way to get the current project
+        project = Project.query.filter_by(user_id=current_user.id).first()
+        return render_template('noTasks.html', project=project)
     return render_template('taskList.html', tasks=user_tasks)
 
 @views.route('/task/<int:task_id>')
@@ -123,18 +129,23 @@ def editTask(task_id):
         flash('You do not have permission to edit this task.', category='error')
         return redirect(url_for('views.tasks'))
     
-    users = User.query.filter(User.usertype != 'viewer').all()
+    users = User.query.filter(User.usertype != 'viewer').all()  # Query users
 
     if request.method == 'POST':
         task.name = request.form.get('name')
         task.description = request.form.get('description')
         task.status = request.form.get('status')
-        task.due_date = request.form.get('due_date') or None
         assigned_personnel_id = request.form.get('assigned_personnel')
-        task.assigned_personnel_id = assigned_personnel_id
+        task.assigned_personnel_id = assigned_personnel_id  # Update assigned personnel
+
+        # Convert date string to Python date object
+        due_date_str = request.form.get('due_date')
+        if due_date_str:
+            task.due_date = datetime.strptime(due_date_str, '%Y-%m-%d').date()
+
         db.session.commit()
         flash('Task updated successfully!', category='success')
-        return redirect(url_for('views.projectTasks', project_id=task.project_id))
+        return redirect(url_for('views.task_detail', task_id=task.id))
     
     return render_template('editTask.html', task=task, users=users)
 
@@ -142,13 +153,14 @@ def editTask(task_id):
 @login_required
 def deleteTask(task_id):
     task = Task.query.get_or_404(task_id)
+    project_id = task.project_id  # Save the project_id before deleting the task
     if task.user_id != current_user.id:
         flash('You do not have permission to delete this task.', category='error')
     else:
         db.session.delete(task)
         db.session.commit()
         flash('Task deleted successfully.', category='success')
-    return redirect(url_for('views.tasks'))
+    return redirect(url_for('views.projectTasks', project_id=project_id))
 
 @views.route('/download_tasks_csv')
 @login_required
@@ -253,3 +265,71 @@ def projectTasks(project_id):
         return render_template('noTasksForProject.html', project=project)
     
     return render_template('taskList.html', project=project, tasks=tasks)
+
+@views.route('/export_tasks/<int:project_id>', methods=['GET'])
+@login_required
+def export_tasks(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != current_user.id:
+        flash('You do not have permission to export tasks for this project.', category='error')
+        return redirect(url_for('views.projectTasks', project_id=project_id))
+
+    tasks = Task.query.filter_by(project_id=project_id).all()
+
+    def generate():
+        data = StringIO()
+        writer = csv.writer(data)
+        writer.writerow(('ID', 'Name', 'Description', 'Status', 'Priority', 'Progress', 'Due Date', 'Assigned Personnel'))
+        yield data.getvalue()
+        data.seek(0)
+        data.truncate(0)
+
+        for task in tasks:
+            writer.writerow((task.id, task.name, task.description, task.status, task.priority, task.progress, task.due_date, task.assigned_personnel_id))
+            yield data.getvalue()
+            data.seek(0)
+            data.truncate(0)
+
+    response = Response(generate(), mimetype='text/csv')
+    response.headers.set("Content-Disposition", "attachment", filename=f"tasks_project_{project_id}.csv")
+    return response
+
+@views.route('/upload_tasks/<int:project_id>', methods=['POST'])
+@login_required
+def upload_tasks(project_id):
+    project = Project.query.get_or_404(project_id)
+    if project.user_id != current_user.id:
+        flash('You do not have permission to upload tasks for this project.', category='error')
+        return redirect(url_for('views.projectTasks', project_id=project_id))
+
+    file = request.files['file']
+    if not file:
+        flash('No file selected.', category='error')
+        return redirect(url_for('views.projectTasks', project_id=project_id))
+
+    try:
+        df = pd.read_csv(file)
+        required_columns = {'Name', 'Description', 'Status', 'Priority', 'Progress', 'Due Date', 'Assigned Personnel'}
+        if not required_columns.issubset(df.columns):
+            flash('CSV file is missing required columns.', category='error')
+            return redirect(url_for('views.projectTasks', project_id=project_id))
+
+        for _, row in df.iterrows():
+            task = Task(
+                name=row['Name'],
+                description=row['Description'],
+                status=row['Status'],
+                priority=row['Priority'],
+                progress=row['Progress'],
+                due_date=row['Due Date'],
+                assigned_personnel_id=row['Assigned Personnel'],
+                project_id=project_id,
+                user_id=current_user.id
+            )
+            db.session.add(task)
+        db.session.commit()
+        flash('Tasks uploaded successfully!', category='success')
+    except Exception as e:
+        flash(f'Error processing file: {e}', category='error')
+
+    return redirect(url_for('views.projectTasks', project_id=project_id))

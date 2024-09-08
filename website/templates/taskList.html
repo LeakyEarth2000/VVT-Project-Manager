@@ -18,6 +18,7 @@
                     <th>Status</th>
                     <th>Priority</th>
                     <th>Progress</th>
+                    <th>Assigned Personnel</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -29,7 +30,14 @@
                     <td style="color: white">{{ task.due_date or 'No due date' }}</td>
                     <td style="color: white">{{ task.status }}</td>
                     <td style="color: white">{{ task.priority }}</td>
-                    <td style="color: white">{{ task.progress }}%</td>
+                    <td style="color: white;">
+                        <div class="progress-bar">
+                            <div class="progress-bar-fill progress-{{ task.progress | int // 10 * 10 }}"></div>
+                        </div>
+                    </td>
+                                      
+                    
+                    <td style="color: white">{{ task.assigned_personnel }}</td>
                     <td>
                         <a href="{{ url_for('views.editTask', task_id=task.id) }}" class="btn-edit">Edit</a>
                         <form action="{{ url_for('views.deleteTask', task_id=task.id) }}" method="post" style="display:inline;">
@@ -43,8 +51,15 @@
     </div>
     {% if project %}
         <a href="{{ url_for('views.addTask', project_id=project.id) }}" class="btn-add-task">Add New Task</a>
+    <a href="{{ url_for('views.export_tasks', project_id=project.id) }}" class="btn-export-task">Export Tasks as CSV</a>
+    <form method="POST" action="{{ url_for('views.upload_tasks', project_id=project.id) }}" enctype="multipart/form-data" onsubmit="return validateCSV()">
+        <input type="file" name="file" id="file" accept=".csv" required>
+        <button type="submit" class="btn-upload-task">Upload CSV</button>
+    </form>
     {% endif %}
 </div>
+    
+
 {% endblock %}
 
 {% block styles %}
@@ -86,7 +101,7 @@
     .btn-delete {
         background-color: #dc3545;
     }
-    .btn-add-task {
+    .btn-add-task, .btn-export-task, .btn-upload-task {
         display: inline-block;
         margin-top: 20px;
         padding: 10px 20px;
@@ -96,4 +111,31 @@
         border-radius: 5px;
     }
 </style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function validateCSV() {
+        const fileInput = document.getElementById('file');
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function(e) {
+            const text = e.target.result;
+            const lines = text.split('\n');
+            const headers = lines[0].split(',');
+
+            const requiredHeaders = ['Name', 'Description', 'Status', 'Priority', 'Progress', 'Due Date', 'Assigned Personnel'];
+            const extraHeaders = headers.filter(header => !requiredHeaders.includes(header));
+
+            if (extraHeaders.length > 0) {
+                alert('The CSV file contains extra fields: ' + extraHeaders.join(', ') + '. Please ensure the file only contains the relevant fields.');
+                return false;
+            }
+        };
+
+        reader.readAsText(file);
+        return true;
+    }
+</script>
 {% endblock %}
